@@ -46,6 +46,21 @@
     #forecast i {
       font-size: 5em;
     }
+
+    #switches {
+      position: absolute;
+      width: 8%;
+      margin: -.18%;
+      left: 55%
+    }
+
+    #switches a {
+      margin-right: 2%;
+    }
+
+    .btn-circle {
+      border-radius: 50%;
+    }
   </style>
 </head>
 <body>
@@ -55,8 +70,8 @@
     <div id="today">
       <h1 id="city"><span id="cityName">New York</span><br>New York<a href=""><img src="" alt="" id="changeCity"></a></h1>
       <p><i class="wi wi-day-sunny"></i></p>
-      <h2 id="temperature">101&deg; <a href="#">C</a></h2>
-      <p id="temperatureHighLow">Lows: 90&deg; <a href="#">C</a> | Highs: 126&deg; <a href="#">C</a></p>
+      <h2 id="temperature">101&deg; C<span id="switches"><a class="btn btn-default btn-circle" href="#">C</a><a class="btn btn-default btn-circle" href="#">F</a></span></h2>
+      <p id="temperatureHighLow">Lows: 90&deg; C | Highs: 126&deg; C</p>
     </div>
 
     <hr>
