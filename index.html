@@ -27,7 +27,7 @@
     #cityName {
       font-size: 3.5em;
     }
-
+    /* Possible to shrink text by limited width? This will fix really long City names. */
     #today {
       padding: 2%;
     }
@@ -54,7 +54,7 @@
   <div class="container">
 
     <div id="today">
-      <h1 id="city"><span id="cityName">New York</span><br>New York<a href=""><img src="" alt="" id="changeCity"></a></h1>
+      <h1 id="city"><span id="cityName">New York</span><br><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
       <p><i class="wi wi-day-sunny"></i></p>
       <h2 id="temperature">101&deg; <a href="#">C</a></h2>
       <p id="temperatureHighLow">Lows: 90&deg; <a href="#">C</a> | Highs: 126&deg; <a href="#">C</a></p>
@@ -64,41 +64,6 @@
 
     <div id="forecast">
       <ul>
-        <li>
-          <p class="day">Monday</p>
-          <br>
-          <p><i class="wi wi-day-sunny"></i></p>
-          <br>
-          <p class="date">12/18</p>
-        </li>
-        <li>
-          <p class="day">Tuesday</p>
-          <br>
-          <p><i class="wi wi-day-sunny"></i></p>
-          <br>
-          <p class="date">12/19</p>
-        </li>
-        <li>
-          <p class="day">Wednesday</p>
-          <br>
-          <p><i class="wi wi-day-sunny"></i></p>
-          <br>
-          <p class="date">12/20</p>
-        </li>
-        <li>
-          <p class="day">Thursday</p>
-          <br>
-          <p><i class="wi wi-day-sunny"></i></p>
-          <br>
-          <p class="date">12/21</p>
-        </li>
-        <li>
-          <p class="day">Friday</p>
-          <br>
-          <p><i class="wi wi-day-sunny"></i></p>
-          <br>
-          <p class="date">12/22</p>
-        </li>
       </ul>
     </div>
 
@@ -109,40 +74,56 @@
   </div>
 
   <script>
+    $(document).ready(function() {
 
-    var background;
+      // Variables
+      var backgroundImage;
+      var APPID = "1fa742b5e4a40c16";
+      var state;
+      var city;
+      var temperature;
+      var temperatureLow;
+      var temperatureHigh;
+      var icon;
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    // API
-    var APPID = "1fa742b5e4a40c16";
+      // Gets City and State based on IP address.
+      $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?', null, function(location) {
+          city = location.city;
+          state = location.state;
+          $('#cityName').html(city);
+          $('#state').html(state);
+        });
 
-    // id=today
-    var city;
-    var state;
-    var temperature;
-    var tempLow;
-    var tempHigh;
-    var icon;
-    var days = [];
+      // update weather, only on start & new city
 
-    // main
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        // ask for city or location;
-    }
+      function update(today) {
 
-    // update weather, only on start & new city
+      }
 
-    function update(today){
+      // Loads Days and Dates for #forecast.
+      var date = new Date();
+      var htmlForecastString;
+      var dayIndex = date.getDay();
 
-    }
+      for (i=0; i < 5; i++) {
+        dayIndex = dayIndex + 1;
 
-    //button to go from Celcius to Farenheit
+        if (dayIndex >= 7) {
+          dayIndex = dayIndex - 7;
+        }
 
-    //get location from IP address
+        htmlString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi wi-day-sunny\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
+        $('#forecast ul').append(htmlString);
+      }
 
-    // if cannot get location from computer, enter one?
+      //button to go from Celcius to Farenheit
 
+      //get location from IP address
+
+      // if cannot get location from computer, enter one?
+
+    });
   </script>
 
 </body>
