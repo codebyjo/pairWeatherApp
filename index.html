@@ -47,6 +47,7 @@
       font-size: 5em;
     }
   </style>
+
 </head>
 <body>
 
@@ -102,10 +103,47 @@
     </div>
 
     <div id="credits">
-      <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanna Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
+      <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
     </div>
 
   </div>
+
+  <script>
+
+    var background;
+
+    // API
+    var APPID = "1fa742b5e4a40c16";
+
+    // id=today
+    var city;
+    var state;
+    var temperature;
+    var tempLow;
+    var tempHigh;
+    var icon;
+    var days = [];
+
+    // main
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        // ask for city or location;
+    }
+
+    // update weather, only on start & new city
+
+    function update(today){
+
+    }
+
+    //button to go from Celcius to Farenheit
+
+    //get location from IP address
+
+    // if cannot get location from computer, enter one?
+
+  </script>
 
 </body>
 </html>
