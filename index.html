@@ -19,11 +19,9 @@
       font-family: "Arvo", serif;
       text-align: center;
     }
-
     hr {
       width: 65%;
     }
-
     #cityName {
       font-size: 3.5em;
     }
@@ -31,18 +29,15 @@
     #today {
       padding: 2%;
     }
-
     #today i {
       position: relative;
       font-size: 15em;
       padding: 3%;
     }
-
     #forecast ul li{
       display: inline-block;
       width: 13%;
     }
-
     #forecast i {
       font-size: 5em;
     }
@@ -75,10 +70,9 @@
 
   <script>
     $(document).ready(function() {
-
       // Variables
       var backgroundImage;
-      var APPID = "1fa742b5e4a40c16";
+      var APPID = "174ca7c117e1e592e6796b14b9395aff";
       var state;
       var city;
       var temperature;
@@ -86,7 +80,6 @@
       var temperatureHigh;
       var icon;
       var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
       // Gets City and State based on IP address.
       $.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?', null, function(location) {
           city = location.city;
@@ -94,35 +87,24 @@
           $('#cityName').html(city);
           $('#state').html(state);
         });
-
       // update weather, only on start & new city
-
       function update(today) {
-
       }
-
       // Loads Days and Dates for #forecast.
       var date = new Date();
       var htmlForecastString;
       var dayIndex = date.getDay();
-
       for (i=0; i < 5; i++) {
         dayIndex = dayIndex + 1;
-
         if (dayIndex >= 7) {
           dayIndex = dayIndex - 7;
         }
-
         htmlString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi wi-day-sunny\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
         $('#forecast ul').append(htmlString);
       }
-
       //button to go from Celcius to Farenheit
-
       //get location from IP address
-
       // if cannot get location from computer, enter one?
-
     });
   </script>
 
