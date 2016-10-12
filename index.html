@@ -112,6 +112,7 @@
       var temperature = weather.main.temp; 
       var temperatureLow = weather.main.temp_min;
       var temperatureHigh = weather.main.temp_max;
+      var icon = weather.weather.main;
       var unitLabel;
 
 
@@ -127,7 +128,7 @@
 
       console.log(weather);
 
-
+      //var iconImages = 
 
       $('#icon')
         .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>");
@@ -142,6 +143,7 @@
   };
 
 
+  //doing units, start with imperial if imperical country, to celsius if celsius country
 
   function getUnits(country) {
     var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
