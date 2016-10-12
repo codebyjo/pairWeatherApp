@@ -50,7 +50,7 @@
 
     <div id="today">
       <h1 id="city"><span id="cityName">New York</span><br><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
-      <p><i class="icon" id="icon"></i></p>
+      <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
       <h2 id="temperature"><a href="#"></a></h2>
       <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
     </div>
@@ -110,26 +110,41 @@
       }
       temperature = parseFloat((temperature).toFixed(1));
       console.log(weather);
+
+      //weather conditions available
+
+      // clear sky == .wi-day-sunny
+      //few clouds  == .wi-day-cloudy
+      //scattered clouds ==.wi-day-cloudy
+      //broken clouds =.wi-day-cloudy
+      //shower rain = .wi-rain
+      //rain = .wi-rain
+      //thunderstorm ==.wi-thunderstorm
+      //snow == .wi-snow
+      //mist == .wi-sprinkle
+
       //var iconImages = 
       $('#icon')
         .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>");
+
+
       $('#temperature').append(temperature + " " + unitLabel);
       $('#temperatureLow').append(temperatureLow + " " + unitLabel);
       $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
     }, "jsonp");
   };
-  //doing units, start with imperial if imperical country, to celsius if celsius country
-  function getUnits(country) {
-    var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
-    if (imperialCountries.indexOf(country) === -1) {
-      var units = 'metric';
-    } else {
-      units = 'imperial';
-    }
-    console.log(country, units);
-    return units;
-  }
-});
+      //doing units, start with imperial if imperical country, to celsius if celsius country
+      function getUnits(country) {
+        var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
+        if (imperialCountries.indexOf(country) === -1) {
+          var units = 'metric';
+        } else {
+          units = 'imperial';
+        }
+        console.log(country, units);
+        return units;
+      }
+    });
 
     //toggle button
 
