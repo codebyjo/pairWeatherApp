@@ -57,6 +57,8 @@
 
     <hr>
 
+    <button type="button" data-text-swap="Convert to C">Convert to F</button>
+
     <div id="forecast">
       <ul>
       </ul>
@@ -70,9 +72,7 @@
 
   <script>
     $(document).ready(function() {
-
       getLocation();
-
         function getLocation() {
           $.get("http://ipinfo.io", function(location) {
             console.log(location);
@@ -82,83 +82,64 @@
               state = location.region;
               $('#cityName').html(city);
               $('#state').html(state);
-
             var units = getUnits(location.country);
             getWeather(location.loc, units);
-
             //return weather;
-
           }, "jsonp");
-
         }
-
   function getWeather(loc, units) {
     lat = loc.split(",")[0] //.toString();
     lon = loc.split(",")[1] //.toString();
-
     //cant figure out how to use the array with the 5 day forecast, when I enter it in to the function
-
     //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
-
     //this is the current forecast, max and min temperatures only for this time
-
    var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
-
-
     console.log(weatherApiUrl);
    
-
     $.get(weatherApiUrl, function(weather) {
       var temperature = weather.main.temp; 
       var temperatureLow = weather.main.temp_min;
       var temperatureHigh = weather.main.temp_max;
       var icon = weather.weather.main;
       var unitLabel;
-
-
-
       //label based in imperial vs metric units
       if (units === "imperial") {
         unitLabel = "F";
       } else {
         unitLabel = "C";
       }
-
       temperature = parseFloat((temperature).toFixed(1));
-
       console.log(weather);
-
       //var iconImages = 
-
       $('#icon')
         .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>");
-
       $('#temperature').append(temperature + " " + unitLabel);
       $('#temperatureLow').append(temperatureLow + " " + unitLabel);
       $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
-
-
     }, "jsonp");
-
   };
-
-
   //doing units, start with imperial if imperical country, to celsius if celsius country
-
   function getUnits(country) {
     var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
-
     if (imperialCountries.indexOf(country) === -1) {
       var units = 'metric';
     } else {
       units = 'imperial';
     }
-
     console.log(country, units);
     return units;
   }
-
 });
+
+    //toggle button
+
+    $("button").on("click", function() {
+      var convertingCF = $(this);
+      convertingCF.text() == convertingCF.data("text-swap") 
+        ? convertingCF.text(convertingCF.data("text-original")) 
+        : convertingCF.text(convertingCF.data("text-swap"));
+    });
+
   </script>
 
 </body>
