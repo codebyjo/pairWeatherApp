@@ -32,7 +32,7 @@
     #today i {
       position: relative;
       font-size: 15em;
-      padding: 3%;
+      padding: 4%;
     }
     #forecast ul li{
       display: inline-block;
@@ -49,8 +49,8 @@
   <div class="container">
 
     <div id="today">
-      <h1 id="city"><span id="cityName">New York</span><br><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
-      <p><i class="icon wi wi-day-cloudy" id="icon"></i></p>
+      <h1 id="city"><span id="cityName">New York</span><br /><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
+      <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
       <h2 id="temperature"><a href="#"></a></h2>
       <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
     </div>
@@ -71,37 +71,50 @@
   </div>
 
   <script>
-    $(document).ready(function() {
-      getLocation();
-        function getLocation() {
-          $.get("http://ipinfo.io", function(location) {
-            console.log(location);
+    
+$(document).ready(function() {
+  
+  var forecastData = [];
+  getLocation();
+  
+  function getLocation() {
+    $.get("http://ipinfo.io", function(location) {
+      
+      console.log(location);
 
-            $('.location')
-              city = location.city;
-              state = location.region;
-              $('#cityName').html(city);
-              $('#state').html(state);
-            var units = getUnits(location.country);
-            getWeather(location.loc, units);
-            //return weather;
-          }, "jsonp");
-        }
+      $('.location')
+        city = location.city;
+        state = location.region;
+        $('#cityName').html(city);
+        $('#state').html(state);
+        var units = getUnits(location.country);
+        getWeather(location.loc, units);
+        //return weather;
+      }, "jsonp");
+    }
+    
   function getWeather(loc, units) {
+    
     lat = loc.split(",")[0] //.toString();
     lon = loc.split(",")[1] //.toString();
-    //cant figure out how to use the array with the 5 day forecast, when I enter it in to the function
-    //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
-    //this is the current forecast, max and min temperatures only for this time
-   var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
+    var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
+    //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     console.log(weatherApiUrl);
 
     $.get(weatherApiUrl, function(weather) {
-      var temperature = weather.main.temp;
-      var temperatureLow = weather.main.temp_min;
-      var temperatureHigh = weather.main.temp_max;
-      var country = weather.sys.country;
-      var weatherIcon = weather.weather[0].description;
+      
+      var temperature = weather.list[0].main.temp;
+      var temperatureLow = weather.list[0].main.temp_min;
+      var temperatureHigh = weather.list[0].main.temp_max;
+      var country = weather.country;
+      var weatherIcon = weather.list[0].weather[0].description;
+      
+      for (i=1; 6 > i; i++) {
+        forecastData[i - 1] = weather.list[i].weather[0].description;
+      }
+      
+      console.log(forecastData);
+           
       var unitLabel;
       //label based in imperial vs metric units
       if (units === "imperial") {
@@ -109,11 +122,11 @@
       } else {
         unitLabel = "C";
       }
+      
       temperature = parseFloat((temperature).toFixed(1));
       console.log(weather);
-
-
-  //weather conditions available
+      
+      //weather conditions available
       var weatherClasses = {
         "clear sky": "wi-day-sunny",
         "few clouds": "wi-day-cloudy",
@@ -121,43 +134,76 @@
         "broken clouds": "wi-day-cloudy",
         "shower rain": "wi-rain",
         "rain": "wi-rain",
+        "light rain": "wi-sprinkle",
+        "moderate rain": "wi-rain",
         "thunderstorm": "wi-thunderstorm",
         "snow": "wi-snow",
         "mist": "wi-sprinkle"
       };
+      
+      for (i=0; forecastData.length > i; i++) {
+        console.log(forecastData[i]); //Why is this only logging 2 and 3?
+        forecastData[i] = weatherClasses[forecastData[i]];
+      }
+      
+      // Loads Days and Dates for #forecast.
+      var date = new Date();
+      var htmlForecastString;
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var dayIndex = date.getDay();
+      // Removes previous #forecast list.
+      $('#forecast ul').empty();
+    
+      for (i=0; i < 5; i++) {
+        dayIndex = dayIndex + 1;
+        
+        if (dayIndex >= 7) {
+          dayIndex = dayIndex - 7;
+        }
+        
+        htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
+        $('#forecast ul').append(htmlForecastString);
+      }
 
       if ( weatherClasses.hasOwnProperty(weatherIcon) ){
         $('#icon').removeClass();
         $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
       };
 
-
-    //  $('#icon')
-    //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
+      //  $('#icon')
+      //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
       $('#temperature').append(temperature + " " + unitLabel);
       $('#temperatureLow').append(temperatureLow + " " + unitLabel);
       $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
     }, "jsonp");
   };
-      //doing units, start with imperial if imperical country, to celsius if celsius country
-      function getUnits(country) {
-        var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
-        if (imperialCountries.indexOf(country) === -1) {
-          var units = 'metric';
-        } else {
-          units = 'imperial';
-        }
-        console.log(country, units);
-        return units;
-      }
-    });
-    //toggle button
-    $("button").on("click", function() {
-      var convertingCF = $(this);
-      convertingCF.text() == convertingCF.data("text-swap")
-        ? convertingCF.text(convertingCF.data("text-original"))
-        : convertingCF.text(convertingCF.data("text-swap"));
-    });
+  
+  console.log("EXITLOAD" + forecastData);
+    
+  //doing units, start with imperial if imperical country, to celsius if celsius Celtic! country
+  function getUnits(country) {
+    var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
+    
+    if (imperialCountries.indexOf(country) === -1) {
+      var units = 'metric';
+    } else {
+      units = 'imperial';
+    }
+    
+    console.log(country, units);
+    
+    return units;
+  }
+    
+});
+    
+  //toggle button
+  $("button").on("click", function() {
+    var convertingCF = $(this);
+    convertingCF.text() == convertingCF.data("text-swap")
+    ? convertingCF.text(convertingCF.data("text-original"))
+    : convertingCF.text(convertingCF.data("text-swap"));
+  });
 
   </script>
 
