@@ -50,7 +50,7 @@
 
     <div id="today">
       <h1 id="city"><span id="cityName">New York</span><br><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
-      <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
+      <p><i class="icon wi wi-day-cloudy" id="icon"></i></p>
       <h2 id="temperature"><a href="#"></a></h2>
       <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
     </div>
@@ -76,7 +76,7 @@
         function getLocation() {
           $.get("http://ipinfo.io", function(location) {
             console.log(location);
-            
+
             $('.location')
               city = location.city;
               state = location.region;
@@ -95,12 +95,13 @@
     //this is the current forecast, max and min temperatures only for this time
    var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     console.log(weatherApiUrl);
-   
+
     $.get(weatherApiUrl, function(weather) {
-      var temperature = weather.main.temp; 
+      var temperature = weather.main.temp;
       var temperatureLow = weather.main.temp_min;
       var temperatureHigh = weather.main.temp_max;
-      var icon = weather.weather.main;
+      var country = weather.sys.country;
+      var weatherIcon = weather.weather[0].description;
       var unitLabel;
       //label based in imperial vs metric units
       if (units === "imperial") {
@@ -111,23 +112,28 @@
       temperature = parseFloat((temperature).toFixed(1));
       console.log(weather);
 
-      //weather conditions available
 
-      // clear sky == .wi-day-sunny
-      //few clouds  == .wi-day-cloudy
-      //scattered clouds ==.wi-day-cloudy
-      //broken clouds =.wi-day-cloudy
-      //shower rain = .wi-rain
-      //rain = .wi-rain
-      //thunderstorm ==.wi-thunderstorm
-      //snow == .wi-snow
-      //mist == .wi-sprinkle
+  //weather conditions available
+      var weatherClasses = {
+        "clear sky": "wi-day-sunny",
+        "few clouds": "wi-day-cloudy",
+        "scattered clouds": "wi-day-cloudy",
+        "broken clouds": "wi-day-cloudy",
+        "shower rain": "wi-rain",
+        "rain": "wi-rain",
+        "thunderstorm": "wi-thunderstorm",
+        "snow": "wi-snow",
+        "mist": "wi-sprinkle"
+      };
 
-      //var iconImages = 
-      $('#icon')
-        .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>");
+      if ( weatherClasses.hasOwnProperty(weatherIcon) ){
+        $('#icon').removeClass();
+        $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
+      };
 
 
+    //  $('#icon')
+    //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
       $('#temperature').append(temperature + " " + unitLabel);
       $('#temperatureLow').append(temperatureLow + " " + unitLabel);
       $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
@@ -145,13 +151,11 @@
         return units;
       }
     });
-
     //toggle button
-
     $("button").on("click", function() {
       var convertingCF = $(this);
-      convertingCF.text() == convertingCF.data("text-swap") 
-        ? convertingCF.text(convertingCF.data("text-original")) 
+      convertingCF.text() == convertingCF.data("text-swap")
+        ? convertingCF.text(convertingCF.data("text-original"))
         : convertingCF.text(convertingCF.data("text-swap"));
     });
 
