@@ -55,9 +55,11 @@
       <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
     </div>
 
+    <button class='convert'>Convert to F</button>
+
+
     <hr>
 
-    <button type="button" data-text-swap="Convert to C">Convert to F</button>
 
     <div id="forecast">
       <ul>
@@ -81,7 +83,6 @@ $(document).ready(function() {
     $.get("http://ipinfo.io", function(location) {
       
       console.log(location);
-
       $('.location')
         city = location.city;
         state = location.region;
@@ -100,7 +101,6 @@ $(document).ready(function() {
     var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     console.log(weatherApiUrl);
-
     $.get(weatherApiUrl, function(weather) {
       
       var temperature = weather.list[0].main.temp;
@@ -164,12 +164,10 @@ $(document).ready(function() {
         htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
         $('#forecast ul').append(htmlForecastString);
       }
-
       if ( weatherClasses.hasOwnProperty(weatherIcon) ){
         $('#icon').removeClass();
         $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
       };
-
       //  $('#icon')
       //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
       $('#temperature').append(temperature + " " + unitLabel);
@@ -198,12 +196,14 @@ $(document).ready(function() {
 });
     
   //toggle button
-  $("button").on("click", function() {
-    var convertingCF = $(this);
-    convertingCF.text() == convertingCF.data("text-swap")
-    ? convertingCF.text(convertingCF.data("text-original"))
-    : convertingCF.text(convertingCF.data("text-swap"));
-  });
+
+    $(function(){
+       $(".convert").click(function () {
+          $(this).text(function(i, text){
+              return text === "CONVERT TO F" ? "CONVERT TO C" : "CONVERT TO F";
+          })
+       });
+    })
 
   </script>
 
