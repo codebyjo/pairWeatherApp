@@ -120,7 +120,7 @@ $(document).ready(function() {
 
       console.log(forecastData);
 
-      temperature = parseFloat((temperature).toFixed(1));
+      //temperature = parseFloat((temperature).toFixed(1));
 
       //weather conditions available
       var weatherClasses = {
@@ -214,7 +214,7 @@ $(document).ready(function() {
   }
 
 
-
+  // Converts temperature and text for onclick Button
   $('.convert').on('click', function() {
 
     var $htmlContent = $('.convert').text();
@@ -223,15 +223,31 @@ $(document).ready(function() {
 
       $('.convert').text('Convert to F');
       unitLabel = "C";
-      console.log(unitLabel);
-      $('#temperature').text(temperature + " " + unitLabel);
+      console.log(temperature);
+
+      // Fah to Celsius
+      temperature = ( temperature - 32 ) * (5 / 9);
+      temperatureLow = ( temperatureLow - 32 ) * (5 / 9);
+      temperatureHigh = ( temperatureHigh - 32 ) * (5 / 9);
+
+      $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
+      $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
+      $('#temperatureHigh').text(Math.floor(temperatureHigh)+ " " + unitLabel);
 
     } else if ($htmlContent == 'Convert to F') {
 
       $('.convert').text('Convert to C');
       unitLabel = "F";
-      console.log(unitLabel);
-      $('#temperature').text(temperature + " " + unitLabel);
+      console.log(temperature);
+
+      // Celsius to Fah
+      temperature = ( temperature * (9 / 5) ) + 32;
+      temperatureLow = ( temperatureLow * (9 / 5) ) + 32;
+      temperatureHigh = ( temperatureHigh * (9 / 5) ) + 32;
+
+      $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
+      $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
+      $('#temperatureHigh').text(Math.floor(temperatureHigh) + " " + unitLabel);
 
     };
     //if metric units convert to F
