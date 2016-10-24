@@ -55,7 +55,7 @@
       <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
     </div>
 
-    <button class='convert'>Convert to <span class="tempFormat">F</span></button>
+    <button class='convert'>Convert to<span class="tempFormat"></span></button>
 
 
     <hr>
@@ -78,6 +78,10 @@ $(document).ready(function() {
 
   var forecastData = [];
   var units;
+  var temperature;
+  var temperatureLow;
+  var temperatureHigh;
+
   getLocation();
 
   function getLocation() {
@@ -104,9 +108,9 @@ $(document).ready(function() {
     console.log(weatherApiUrl);
     $.get(weatherApiUrl, function(weather) {
 
-      var temperature = Math.floor(weather.list[0].main.temp);
-      var temperatureLow = Math.floor(weather.list[0].main.temp_min);
-      var temperatureHigh = Math.floor(weather.list[0].main.temp_max);
+      temperature = Math.floor(weather.list[0].main.temp);
+      temperatureLow = Math.floor(weather.list[0].main.temp_min);
+      temperatureHigh = Math.floor(weather.list[0].main.temp_max);
       var country = weather.country;
       var weatherIcon = weather.list[0].weather[0].description;
 
@@ -117,7 +121,6 @@ $(document).ready(function() {
       console.log(forecastData);
 
       temperature = parseFloat((temperature).toFixed(1));
-      console.log(weather);
 
       //weather conditions available
       var weatherClasses = {
@@ -149,9 +152,18 @@ $(document).ready(function() {
     //    "mist": "misty.jpeg"
     //  };
 
+    var unitLabel;
+    //label based in imperial vs metric units
+    console.log(units);
+    if (units === "imperial") {
+      unitLabel = "F";
+      $('.tempFormat').text(' C');
+    } else {
+      unitLabel = "C";
+      $('.tempFormat').text(' F');
+    };
 
       for (i=0; forecastData.length > i; i++) {
-        console.log(forecastData[i]); //Why is this only logging 2 and 3?
         forecastData[i] = weatherClasses[forecastData[i]];
       }
 
@@ -201,13 +213,7 @@ $(document).ready(function() {
     return units;
   }
 
-  var unitLabel;
-  //label based in imperial vs metric units
-  if (units == "imperial") {
-    unitLabel = "F";
-  } else {
-    unitLabel = "C";
-  };
+
 
   $('.convert').on('click', function() {
 
@@ -216,16 +222,16 @@ $(document).ready(function() {
     if ($htmlContent == 'Convert to C') {
 
       $('.convert').text('Convert to F');
-      unitLabel = "F";
+      unitLabel = "C";
       console.log(unitLabel);
-      //$('#temperature').text(temperature + " " + unitLabel);
+      $('#temperature').text(temperature + " " + unitLabel);
 
     } else if ($htmlContent == 'Convert to F') {
 
       $('.convert').text('Convert to C');
-      unitLabel = "C";
+      unitLabel = "F";
       console.log(unitLabel);
-      //$('#temperature').text(temperature + " " + unitLabel);
+      $('#temperature').text(temperature + " " + unitLabel);
 
     };
     //if metric units convert to F
@@ -238,4 +244,3 @@ $(document).ready(function() {
 
 </body>
 </html>
-
