@@ -1,213 +1,233 @@
 <!DOCTYPE html>
-<html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Soil and Food</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/ionicons.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    
-    <!-- Js -->
-    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>pairWeatherApp brought you by Jo &amp; Ed</title>
+
+  <link rel="stylesheet" href="http://meyerweb.com/eric/tools/css/reset/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.css"><!-- May need to keep font files locally if not pulled correctly.-->
+
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <style type="text/css">
+    body {
+      font-family: "Arvo", serif;
+      text-align: center;
+    }
+    hr {
+      width: 65%;
+    }
+    #cityName {
+      font-size: 3.5em;
+    }
+    /* Possible to shrink text by limited width? This will fix really long City names. */
+    #today {
+      padding: 2%;
+    }
+    #today i {
+      position: relative;
+      font-size: 15em;
+      padding: 4%;
+    }
+    #forecast ul li{
+      display: inline-block;
+      width: 13%;
+    }
+    #forecast i {
+      font-size: 5em;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div id="today">
+      <h1 id="city"><span id="cityName">New York</span><br /><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
+      <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
+      <h2 id="temperature"><a href="#"></a></h2>
+      <p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>
+    </div>
+
+    <button class='convert'>Convert to <span class="tempFormat">F</span></button>
 
 
-    <!--favicon-->
-    <link rel="apple-touch-icon" sizes="57x57" href="img/favicon.ico/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon.ico/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon.ico/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="img/favicon.ico/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon.ico/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon.ico/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon.ico/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="img/favicon.ico/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon.ico/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="img/favicon.ico/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.ico/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon.ico/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.ico/favicon-16x16.png">
-    <link rel="manifest" href="img/avicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-
-  </head>
-  <body>
+    <hr>
 
 
+    <div id="forecast">
+      <ul>
+      </ul>
+    </div>
 
-    <!-- Header Start -->
-  <header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <!-- header Nav Start -->
-          <nav class="navbar navbar-default">
-            <div class="container-fluid">
-              <!-- Brand and toggle get grouped for better mobile display -->
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">
-                  <img src="img/logo.png" alt="Logo">
-                </a>
-              </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="seminars.html">Seminars</a></li>
-                    <li><a href="articles.html">Articles and Media</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                  </ul>
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
-          </div>
-        </div>
-      </div>
-    </header><!-- header close -->
-        
-    <!-- Slider Start -->
-    <section id="slider">
-      <div class="container sc-content">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-2">
-            <div class="block sc-content">
-              <h1 class="animated fadeInUp"><b>SOIL AND FOOD</b></h1>
-              <p class="animated fadeInUp">Independent consultancy and education service provider on biological and ecological farming</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Wrapper Start -->
-    <section id="intro">
-      <div class="container">
-        <div class="row" id="about">
-          <div class="col-md-7 col-sm-12">
-            <div class="block">
-              <div class="section-title">
-                <h2>ABOUT</h2>
-              </div>
-                <div class="sc-content">
-                <p>Joel Williams is a passionate educator and crop and soil health consultant who has primarily worked throughout Australia and the UK. He worked on conventional and organic farms improving sustainable farming practices in Australia before heading to the UK where Joel was investigating biological farming principles and providing soil chemical and biological assessments to primary producers throughout Europe. After this, Joel returned to Australia educating growers particularly on soil biology as well as working for Australia’s leading organic certification body. He is now based back in the UK where he is a full time grower at a London University creating an edible campus; growing organic vegetables to inspire and teach students, staff and local community about food growing – strengthening the connection between consumers and their food. He has a Bachelor of Agricultural Science specialising in crop and soil sciences and a keen interest in managing soil microbial balance and plant and soil nutrition to optimise plant immunity, soil health and carbon sequestration. He has a passion for teaching and sharing both scientific and practical knowledge on sustainable growing practices and has been fortunate enough to educate audiences in Australia, UK, Europe, South Africa, Canada and the US.</p>
-              </div><!--sc-content-->
-            </div><!--block-->
-          </div><!-- .col-md-7 close -->
-          <div class="col-md-5 col-sm-12">
-            <div class="block sc-content">
-              <img src="img/JW.jpg" alt="Joel Williams">
-            </div>
-          </div><!-- .col-md-5 close -->
-        </div>
-      </div>
-    </section>
+    <div id="credits">
+      <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
+    </div>
 
-  <section id="feature">
-  <!-- Service Start -->
-    <section id="services">
-      <div class="container">
-        <div class="row">
-          <div class="section-title">
-            <h2>Services</h2>
-          </div>
-        </div>
-        <div class="row ">
-          <div class="col-sm-6 col-md-4 ">
-            <div class="service-item sc-content">
-              <i class="icon ion-coffee"></i>
-              <h4>Educational seminars and workshops</h4>
-              <p>Introductory presentations through to half day, full day and multi-day lectures </p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="service-item  sc-content">
-              <i class="ion-compass"></i>
-              <h4>Workshops and practical sessions</h4>
-              <p>Composting, Compost Tea, Field Meters (brix, pH, potassium, nitrate etc), Soil and Leaf Interpretation</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 sc-content">
-            <div class="service-item  sc-content">
-              <i class="ion-image"></i>
-              <h4>On-farm consulting</h4>
-              <p>Half day option</p>
-              <p>Full day options</p>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="service-item  sc-content">
-              <i class="ion-leaf"></i>
-              <h4>Technical report writing, articles and extension</h4>
-              <!--<p>Make a comment here </p>-->
-            </div>
-          </div>  
-          <div class="col-sm-6 col-md-4">
-            <div class="service-item  sc-content">
-              <i class="ion-bug"></i>
-              <h4>Soil test reporting - interpretation and recommendations</h4>
-              <!--<p>Make comment here</p>-->
-            </div>
-          </div>
-  
-        </div>
-      </div>
-    </section>
-  </section>
+  </div>
 
-    <section id="testimonial">
-      <div class="container">
-        <div class="row">
-            <div class="section-title text-center sc-content">
+  <script>
 
-              <h2>TESTIMONIALS</h2>
-              <div class="sc-content">
-                <p>“Enthusiasm combined with great knowledge”</p>
-                <p>"Pragmatic and practical approach"</p>
-                <p>"Enthusiasm... knowledge... confidence... eloquence..."</p>
-                <p>"Personable.  Flexible re: questions from us.  Able to translate scientific terms into layman's words"</p>
-                <p>"Joel's infectious enthusiasm for soil management invites us to look at making practical experimental changes in our own fields, to look at our work holistically & to build soil C using a variety of strategies.  One-size definitely doesn't fit all & the benefit of this course has been opening my eyes to the 'anything is possible' approach championed by Joel"</p>
-              </div>
-            </div>
-          </div>
-      </div>
-    </section>
+$(document).ready(function() {
 
-  </section>
-        
-<!-- Footer Start -->
-    <footer id="call-to-action">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="block sc-content-footer">
-                  <p>Copyright &copy; <a href="http://www.soilandfood.com">Soil And Food</a> / Web by <a href="http:///www.codebyjo.com">codebyjo</a></p>    
-                  <p class="admin"><a href="http://soilandfood.com/sitecake.php">Admin</a></p>   
-              </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  var forecastData = [];
+  getLocation();
 
-    <script src="js/smoothScroll.js"></script>
-            
-    
-    </body>
+  function getLocation() {
+    $.get("http://ipinfo.io", function(location) {
+
+      console.log(location);
+      $('.location')
+        city = location.city;
+        state = location.region;
+        $('#cityName').html(city);
+        $('#state').html(state);
+        var units = getUnits(location.country);
+        getWeather(location.loc, units);
+        //return weather;
+      }, "jsonp");
+    }
+
+  function getWeather(loc, units) {
+
+    lat = loc.split(",")[0] //.toString();
+    lon = loc.split(",")[1] //.toString();
+    var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
+    //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
+    console.log(weatherApiUrl);
+    $.get(weatherApiUrl, function(weather) {
+
+      var temperature = weather.list[0].main.temp;
+      var temperatureLow = weather.list[0].main.temp_min;
+      var temperatureHigh = weather.list[0].main.temp_max;
+      var country = weather.country;
+      var weatherIcon = weather.list[0].weather[0].description;
+
+      for (i=1; 6 > i; i++) {
+        forecastData[i - 1] = weather.list[i].weather[0].description;
+      }
+
+      console.log(forecastData);
+
+      var unitLabel;
+      //label based in imperial vs metric units
+      if (units === "imperial") {
+        unitLabel = "F";
+      } else {
+        unitLabel = "C";
+      }
+
+      temperature = parseFloat((temperature).toFixed(1));
+      console.log(weather);
+
+      //weather conditions available
+      var weatherClasses = {
+        "clear sky": "wi-day-sunny",
+        "few clouds": "wi-day-cloudy",
+        "scattered clouds": "wi-day-cloudy",
+        "broken clouds": "wi-day-cloudy",
+        "shower rain": "wi-rain",
+        "rain": "wi-rain",
+        "light rain": "wi-sprinkle",
+        "moderate rain": "wi-rain",
+        "thunderstorm": "wi-thunderstorm",
+        "snow": "wi-snow",
+        "mist": "wi-sprinkle"
+      };
+
+      //weather conditio background available
+    //  var weatherClasses = {
+    //    "clear sky": "sunny.jpg",
+    //    "few clouds": "cloudy.jpg",
+    //    "scattered clouds": "cloudy.jpg",
+    //    "broken clouds": "cloudy.jpg",
+    //    "shower rain": "rain.jpg",
+    //    "rain": "rain.jpg",
+    //    "light rain": "rain.jpg",
+    //    "moderate rain": "rain.jpg",
+    //  "thunderstorm": "thunderstorm.jpeg",
+    //    "snow": "snow.jpeg",
+    //    "mist": "misty.jpeg"
+    //  };
+
+
+      for (i=0; forecastData.length > i; i++) {
+        console.log(forecastData[i]); //Why is this only logging 2 and 3?
+        forecastData[i] = weatherClasses[forecastData[i]];
+      }
+
+      // Loads Days and Dates for #forecast.
+      var date = new Date();
+      var htmlForecastString;
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var dayIndex = date.getDay();
+      // Removes previous #forecast list.
+      $('#forecast ul').empty();
+
+      for (i=0; i < 5; i++) {
+        dayIndex = dayIndex + 1;
+
+        if (dayIndex >= 7) {
+          dayIndex = dayIndex - 7;
+        }
+
+        htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
+        $('#forecast ul').append(htmlForecastString);
+      }
+      if ( weatherClasses.hasOwnProperty(weatherIcon) ){
+        $('#icon').removeClass();
+        $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
+      };
+      //  $('#icon')
+      //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
+      $('#temperature').append(temperature + " " + unitLabel);
+      $('#temperatureLow').append(temperatureLow + " " + unitLabel);
+      $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
+    }, "jsonp");
+  };
+
+  console.log("EXITLOAD" + forecastData);
+
+  //doing units, start with imperial if imperical country, to celsius if celsius Celtic! country
+  function getUnits(country) {
+    var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
+
+    if (imperialCountries.indexOf(country) === -1) {
+      var units = 'metric';
+    } else {
+      units = 'imperial';
+    }
+
+    console.log(country, units);
+
+    return units;
+  }
+
+});
+
+//toggle button
+    $(".convert").click(function() {
+      $('.units').each(function(){
+      //if units = metric, switch to imperial
+      //if units = imperial, switch to metric
+      if (units = "imperial") {
+          ;
+      } else {
+
+      }
+    });
+
+
+
+
+
+  </script>
+
+</body>
 </html>
