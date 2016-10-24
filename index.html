@@ -77,6 +77,7 @@
 $(document).ready(function() {
 
   var forecastData = [];
+  var units;
   getLocation();
 
   function getLocation() {
@@ -88,7 +89,7 @@ $(document).ready(function() {
         state = location.region;
         $('#cityName').html(city);
         $('#state').html(state);
-        var units = getUnits(location.country);
+        units = getUnits(location.country);
         getWeather(location.loc, units);
         //return weather;
       }, "jsonp");
@@ -103,9 +104,9 @@ $(document).ready(function() {
     console.log(weatherApiUrl);
     $.get(weatherApiUrl, function(weather) {
 
-      var temperature = weather.list[0].main.temp;
-      var temperatureLow = weather.list[0].main.temp_min;
-      var temperatureHigh = weather.list[0].main.temp_max;
+      var temperature = Math.floor(weather.list[0].main.temp);
+      var temperatureLow = Math.floor(weather.list[0].main.temp_min);
+      var temperatureHigh = Math.floor(weather.list[0].main.temp_max);
       var country = weather.country;
       var weatherIcon = weather.list[0].weather[0].description;
 
@@ -114,14 +115,6 @@ $(document).ready(function() {
       }
 
       console.log(forecastData);
-
-      var unitLabel;
-      //label based in imperial vs metric units
-      if (units === "imperial") {
-        unitLabel = "F";
-      } else {
-        unitLabel = "C";
-      }
 
       temperature = parseFloat((temperature).toFixed(1));
       console.log(weather);
@@ -184,6 +177,7 @@ $(document).ready(function() {
         $('#icon').removeClass();
         $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
       };
+
       //  $('#icon')
       //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
       $('#temperature').append(temperature + " " + unitLabel);
@@ -192,42 +186,56 @@ $(document).ready(function() {
     }, "jsonp");
   };
 
-  console.log("EXITLOAD" + forecastData);
-
   //doing units, start with imperial if imperical country, to celsius if celsius Celtic! country
   function getUnits(country) {
     var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
 
     if (imperialCountries.indexOf(country) === -1) {
-      var units = 'metric';
+      units = 'metric';
     } else {
       units = 'imperial';
-    }
+    };
 
     console.log(country, units);
 
     return units;
   }
 
+  var unitLabel;
+  //label based in imperial vs metric units
+  if (units == "imperial") {
+    unitLabel = "F";
+  } else {
+    unitLabel = "C";
+  };
+
+  $('.convert').on('click', function() {
+
+    var $htmlContent = $('.convert').text();
+
+    if ($htmlContent == 'Convert to C') {
+
+      $('.convert').text('Convert to F');
+      unitLabel = "F";
+      console.log(unitLabel);
+      //$('#temperature').text(temperature + " " + unitLabel);
+
+    } else if ($htmlContent == 'Convert to F') {
+
+      $('.convert').text('Convert to C');
+      unitLabel = "C";
+      console.log(unitLabel);
+      //$('#temperature').text(temperature + " " + unitLabel);
+
+    };
+    //if metric units convert to F
+
+  });
+
+ // ALL JS and jQuery BEFORE this End Bracket.
 });
-
-//toggle button
-    $(".convert").click(function() {
-      $('.units').each(function(){
-      //if units = metric, switch to imperial
-      //if units = imperial, switch to metric
-      if (units = "imperial") {
-          ;
-      } else {
-
-      }
-    });
-
-
-
-
-
   </script>
 
 </body>
 </html>
+
