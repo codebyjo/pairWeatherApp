@@ -18,6 +18,28 @@
     body {
       font-family: "Arvo", serif;
       text-align: center;
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: auto 100%;
+      /* border: 1px solid red; <- Indicates body ends with image and not height of content. */
+      color: #ffffff;
+      text-shadow: 1px 1px #34495e;
+    }
+    a:hover {
+      color: #3498db;
+    }
+    /* .blur-container has a smaller width than .container */
+    .blur-container {
+      left: 20%;
+      position: fixed;
+      width: 60%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.35); 
+      z-index: -1;
+      filter: blur(50px);
+    }
+    .container {
+      width: 70%;
     }
     hr {
       width: 65%;
@@ -46,6 +68,8 @@
 </head>
 <body>
 
+  <div class="blur-container">
+  </div>
   <div class="container">
 
     <div id="today">
@@ -57,9 +81,7 @@
 
     <button class='convert'>Convert to<span class="tempFormat"></span></button>
 
-
     <hr>
-
 
     <div id="forecast">
       <ul>
@@ -69,7 +91,6 @@
     <div id="credits">
       <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
     </div>
-
   </div>
 
   <script>
@@ -112,56 +133,52 @@ $(document).ready(function() {
       temperatureLow = Math.floor(weather.list[0].main.temp_min);
       temperatureHigh = Math.floor(weather.list[0].main.temp_max);
       var country = weather.country;
-      var weatherIcon = weather.list[0].weather[0].description;
+      var weatherIcon = weather.list[0].weather[0].main;
 
       for (i=1; 6 > i; i++) {
-        forecastData[i - 1] = weather.list[i].weather[0].description;
+        forecastData[i - 1] = weather.list[i].weather[0].main;
       }
 
-      console.log(forecastData);
-
-      //temperature = parseFloat((temperature).toFixed(1));
-
-      //weather conditions available
+      // Weather Conditions match for icons.
       var weatherClasses = {
-        "clear sky": "wi-day-sunny",
-        "few clouds": "wi-day-cloudy",
-        "scattered clouds": "wi-day-cloudy",
-        "broken clouds": "wi-day-cloudy",
-        "shower rain": "wi-rain",
-        "rain": "wi-rain",
-        "light rain": "wi-sprinkle",
-        "moderate rain": "wi-rain",
-        "thunderstorm": "wi-thunderstorm",
-        "snow": "wi-snow",
-        "mist": "wi-sprinkle"
+        "Thunderstorm": "wi-lightning",
+        "Drizzle": "wi-showers",
+        "Rain": "wi-rain",
+        "Snow": "wi-snow",
+        "Atmosphere": "wi-fog",
+        "Clear": "wi-day-sunny",
+        "Clouds": "wi-cloudy",
+        "Extreme": "wi-tornade",
+        "Additional": "wi-na"
       };
 
-      //weather conditio background available
-    //  var weatherClasses = {
-    //    "clear sky": "sunny.jpg",
-    //    "few clouds": "cloudy.jpg",
-    //    "scattered clouds": "cloudy.jpg",
-    //    "broken clouds": "cloudy.jpg",
-    //    "shower rain": "rain.jpg",
-    //    "rain": "rain.jpg",
-    //    "light rain": "rain.jpg",
-    //    "moderate rain": "rain.jpg",
-    //  "thunderstorm": "thunderstorm.jpeg",
-    //    "snow": "snow.jpeg",
-    //    "mist": "misty.jpeg"
-    //  };
-
-    var unitLabel;
-    //label based in imperial vs metric units
-    console.log(units);
-    if (units === "imperial") {
-      unitLabel = "F";
-      $('.tempFormat').text(' C');
-    } else {
-      unitLabel = "C";
-      $('.tempFormat').text(' F');
-    };
+      // Weather Conditions match for background.
+      var weatherBackgrounds = {
+        "Thunderstorm": "thunderstorm.jpg",
+        "Drizzle": "rain.jpg",
+        "Rain": "rain.jpg",
+        "Snow": "snow.jpg",
+        "Atmosphere": "misty.jpg",
+        "Clear": "",
+        "Clouds": "cloudy.jpg",
+        "Extreme": "",
+        "Additional": ""
+      };
+      
+      // Sets the background based on weatherIcon.
+      $('body').css('background-image', 'url(' + weatherBackgrounds[weatherIcon] + ')');
+      console.log(weatherBackgrounds[weatherIcon]);
+                  
+      var unitLabel;
+      //label based in imperial vs metric units
+      console.log(units);
+      if (units === "imperial") {
+        unitLabel = "F";
+        $('.tempFormat').text(' C');
+      } else {
+        unitLabel = "C";
+        $('.tempFormat').text(' F');
+      };
 
       for (i=0; forecastData.length > i; i++) {
         forecastData[i] = weatherClasses[forecastData[i]];
