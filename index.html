@@ -54,6 +54,7 @@
     }
     #cityName {
       font-size: 3.5em;
+      width: 100%;
     }
     /* Possible to shrink text by limited width? This will fix really long City names. */
     #today {
@@ -66,14 +67,20 @@
     }
     #forecast ul li{
       display: inline-block;
+      min-width: 90px;
       width: 13%;
     }
     #forecast i {
       font-size: 5em;
     }
+
     @media (max-width: 740px) {
+      h1 {
+        font-size: .80em;
+      }
+    }
       #forecast ul li {
-          display: block;
+          
           margin: auto;
       }
     }
@@ -87,7 +94,7 @@
   <div class="container">
 
     <div id="today">
-      <h1 id="city"><span id="cityName">New York</span><br /><span id="state">New York</span><a href=""><img src="" alt="" id="changeCity"></a></h1>
+      <h1 id="city"><span id="cityName"></span><br /><span id="state"></span><a href=""><img src="" alt="" id="changeCity"></a></h1>
       <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
       <h2 id="temperature"><a href="#"></a></h2>
       <!--<p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>-->
@@ -117,7 +124,6 @@ $(document).ready(function() {
   getLocation();
   function getLocation() {
     $.get("http://ipinfo.io", function(location) {
-      console.log(location);
       $('.location')
         city = location.city;
         state = location.region;
@@ -133,7 +139,6 @@ $(document).ready(function() {
     lon = loc.split(",")[1] //.toString();
     var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
-    console.log(weatherApiUrl);
     $.get(weatherApiUrl, function(weather) {
       temperature = Math.floor(weather.list[0].main.temp);
       temperatureLow = Math.floor(weather.list[0].main.temp_min);
@@ -170,11 +175,9 @@ $(document).ready(function() {
 
       // Sets the background based on weatherIcon.
       $('body').css('background-image', 'url(' + weatherBackgrounds[weatherIcon] + ')');
-      console.log(weatherBackgrounds[weatherIcon]);
 
       var unitLabel;
       //label based in imperial vs metric units
-      console.log(units);
       if (units === "imperial") {
         unitLabel = "F";
         $('.tempFormat').text(' C');
@@ -206,9 +209,9 @@ $(document).ready(function() {
       };
       //  $('#icon')
       //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
-      $('#temperature').append(temperature + " " + unitLabel);
-      $('#temperatureLow').append(temperatureLow + " " + unitLabel);
-      $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
+      $('#temperature').append(temperature + " &deg; " + unitLabel);
+      $('#temperatureLow').append(temperatureLow + " &deg; " + unitLabel);
+      $('#temperatureHigh').append(temperatureHigh + " &deg; " + unitLabel);
     }, "jsonp");
   };
   //doing units, start with imperial if imperical country, to celsius if celsius Celtic! country
@@ -219,7 +222,6 @@ $(document).ready(function() {
     } else {
       units = 'imperial';
     };
-    console.log(country, units);
     return units;
   }
   // Converts temperature and text for onclick Button
@@ -228,25 +230,25 @@ $(document).ready(function() {
     if ($htmlContent == 'Convert to C') {
       $('.convert').text('Convert to F');
       unitLabel = "C";
-      console.log(temperature);
+
       // Fah to Celsius
       temperature = ( temperature - 32 ) * (5 / 9);
       temperatureLow = ( temperatureLow - 32 ) * (5 / 9);
       temperatureHigh = ( temperatureHigh - 32 ) * (5 / 9);
-      $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
-      $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
-      $('#temperatureHigh').text(Math.floor(temperatureHigh)+ " " + unitLabel);
+      $('#temperature').html( Math.floor(temperature) + " &deg; " + unitLabel);
+      $('#temperatureLow').html(Math.floor(temperatureLow) + " &deg; " + unitLabel);
+      $('#temperatureHigh').html(Math.floor(temperatureHigh)+ " &deg; " + unitLabel);
     } else if ($htmlContent == 'Convert to F') {
       $('.convert').text('Convert to C');
       unitLabel = "F";
-      console.log(temperature);
+
       // Celsius to Fah
       temperature = ( temperature * (9 / 5) ) + 32;
       temperatureLow = ( temperatureLow * (9 / 5) ) + 32;
       temperatureHigh = ( temperatureHigh * (9 / 5) ) + 32;
-      $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
-      $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
-      $('#temperatureHigh').text(Math.floor(temperatureHigh) + " " + unitLabel);
+      $('#temperature').html( Math.floor(temperature) + " &deg; " + unitLabel);
+      $('#temperatureLow').html(Math.floor(temperatureLow) + " &deg; " + unitLabel);
+      $('#temperatureHigh').html(Math.floor(temperatureHigh) + " &deg; " + unitLabel);
     };
     //if metric units convert to F
   });
