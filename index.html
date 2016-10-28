@@ -34,14 +34,13 @@
       position: fixed;
       width: 60%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.35); 
+      background: rgba(0, 0, 0, 0.35);
       z-index: -1;
       filter: blur(50px);
     }
     .container {
       width: 70%;
     }
-
     button {
       background-color: Transparent;
       border: 2px solid white;
@@ -50,7 +49,6 @@
       font-size: 1.25em;
       font-style: bold;
     }
-
     hr {
       width: 65%;
     }
@@ -73,17 +71,12 @@
     #forecast i {
       font-size: 5em;
     }
-
     @media (max-width: 740px) {
       #forecast ul li {
           display: block;
           margin: auto;
-
       }
     }
-
-
-
   </style>
 
 </head>
@@ -115,20 +108,15 @@
   </div>
 
   <script>
-
 $(document).ready(function() {
-
   var forecastData = [];
   var units;
   var temperature;
   var temperatureLow;
   var temperatureHigh;
-
   getLocation();
-
   function getLocation() {
     $.get("http://ipinfo.io", function(location) {
-
       console.log(location);
       $('.location')
         city = location.city;
@@ -140,26 +128,21 @@ $(document).ready(function() {
         //return weather;
       }, "jsonp");
     }
-
   function getWeather(loc, units) {
-
     lat = loc.split(",")[0] //.toString();
     lon = loc.split(",")[1] //.toString();
     var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     //var weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&units=" + units + '&appid=174ca7c117e1e592e6796b14b9395aff';
     console.log(weatherApiUrl);
     $.get(weatherApiUrl, function(weather) {
-
       temperature = Math.floor(weather.list[0].main.temp);
       temperatureLow = Math.floor(weather.list[0].main.temp_min);
       temperatureHigh = Math.floor(weather.list[0].main.temp_max);
       var country = weather.country;
       var weatherIcon = weather.list[0].weather[0].main;
-
       for (i=1; 6 > i; i++) {
         forecastData[i - 1] = weather.list[i].weather[0].main;
       }
-
       // Weather Conditions match for icons.
       var weatherClasses = {
         "Thunderstorm": "wi-lightning",
@@ -172,7 +155,6 @@ $(document).ready(function() {
         "Extreme": "wi-tornade",
         "Additional": "wi-na"
       };
-
       // Weather Conditions match for background.
       var weatherBackgrounds = {
         "Thunderstorm": "thunderstorm.jpg",
@@ -185,11 +167,11 @@ $(document).ready(function() {
         "Extreme": "extreme.jpg",
         "Additional": "additional.jpg"
       };
-      
+
       // Sets the background based on weatherIcon.
       $('body').css('background-image', 'url(' + weatherBackgrounds[weatherIcon] + ')');
       console.log(weatherBackgrounds[weatherIcon]);
-                  
+
       var unitLabel;
       //label based in imperial vs metric units
       console.log(units);
@@ -200,11 +182,9 @@ $(document).ready(function() {
         unitLabel = "C";
         $('.tempFormat').text(' F');
       };
-
       for (i=0; forecastData.length > i; i++) {
         forecastData[i] = weatherClasses[forecastData[i]];
       }
-
       // Loads Days and Dates for #forecast.
       var date = new Date();
       var htmlForecastString;
@@ -212,14 +192,11 @@ $(document).ready(function() {
       var dayIndex = date.getDay();
       // Removes previous #forecast list.
       $('#forecast ul').empty();
-
       for (i=0; i < 5; i++) {
         dayIndex = dayIndex + 1;
-
         if (dayIndex >= 7) {
           dayIndex = dayIndex - 7;
         }
-
         htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
         $('#forecast ul').append(htmlForecastString);
       }
@@ -227,7 +204,6 @@ $(document).ready(function() {
         $('#icon').removeClass();
         $('#icon').addClass("wi").addClass(weatherClasses[weatherIcon]);
       };
-
       //  $('#icon')
       //    .append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].main + ".png'>");
       $('#temperature').append(temperature + " " + unitLabel);
@@ -235,63 +211,45 @@ $(document).ready(function() {
       $('#temperatureHigh').append(temperatureHigh + " " + unitLabel);
     }, "jsonp");
   };
-
   //doing units, start with imperial if imperical country, to celsius if celsius Celtic! country
   function getUnits(country) {
     var imperialCountries = ['US', 'BS', 'BZ', 'KY', 'PW'];
-
     if (imperialCountries.indexOf(country) === -1) {
       units = 'metric';
     } else {
       units = 'imperial';
     };
-
     console.log(country, units);
-
     return units;
   }
-
-
   // Converts temperature and text for onclick Button
   $('.convert').on('click', function() {
-
     var $htmlContent = $('.convert').text();
-
     if ($htmlContent == 'Convert to C') {
-
       $('.convert').text('Convert to F');
       unitLabel = "C";
       console.log(temperature);
-
       // Fah to Celsius
       temperature = ( temperature - 32 ) * (5 / 9);
       temperatureLow = ( temperatureLow - 32 ) * (5 / 9);
       temperatureHigh = ( temperatureHigh - 32 ) * (5 / 9);
-
       $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
       $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
       $('#temperatureHigh').text(Math.floor(temperatureHigh)+ " " + unitLabel);
-
     } else if ($htmlContent == 'Convert to F') {
-
       $('.convert').text('Convert to C');
       unitLabel = "F";
       console.log(temperature);
-
       // Celsius to Fah
       temperature = ( temperature * (9 / 5) ) + 32;
       temperatureLow = ( temperatureLow * (9 / 5) ) + 32;
       temperatureHigh = ( temperatureHigh * (9 / 5) ) + 32;
-
       $('#temperature').text( Math.floor(temperature) + " " + unitLabel);
       $('#temperatureLow').text(Math.floor(temperatureLow) + " " + unitLabel);
       $('#temperatureHigh').text(Math.floor(temperatureHigh) + " " + unitLabel);
-
     };
     //if metric units convert to F
-
   });
-
  // ALL JS and jQuery BEFORE this End Bracket.
 });
   </script>
