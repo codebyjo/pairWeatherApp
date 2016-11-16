@@ -18,9 +18,6 @@
     body {
       font-family: "Arvo", serif;
       text-align: center;
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: auto 100%;
       /* border: 1px solid red; <- Indicates body ends with image and not height of content. */
       color: #ffffff;
       text-shadow: 1px 1px #34495e;
@@ -174,7 +171,8 @@ $(document).ready(function() {
       };
 
       // Sets the background based on weatherIcon.
-      $('body').css('background-image', 'url(' + weatherBackgrounds[weatherIcon] + ')');
+      $('body').css('background', 'url(' + weatherBackgrounds[weatherIcon] + ') no-repeat center center fixed');
+      $('body').css('background-size', 'cover');
 
       var unitLabel;
       //label based in imperial vs metric units
