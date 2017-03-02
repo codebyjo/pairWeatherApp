@@ -20,24 +20,35 @@
       text-align: center;
       /* border: 1px solid red; <- Indicates body ends with image and not height of content. */
       color: #ffffff;
-      text-shadow: 1px 1px #34495e;
+      text-shadow: 2px 2px #34495e;
+    }
+    
+    a {
+      color: #fff;
+      text-decoration: underline;
     }
     a:hover {
-      color: #3498db;
+      color: #fff;
     }
-    /* .blur-container has a smaller width than .container */
-    .blur-container {
-      left: 20%;
-      position: fixed;
-      width: 60%;
+
+    #outer {
+      display: table;
+      position: absolute;
       height: 100%;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: -1;
-      filter: blur(50px);
+      width: 100%;
     }
-    .container {
-      width: 70%;
+    
+    #middle {
+      display: table-cell;
+      vertical-align: middle;
     }
+    
+    #inner {
+      margin-left: auto;
+      margin-right: auto;
+      width: 960px;
+    }
+    
     button {
       background-color: Transparent;
       border: 2px solid white;
@@ -86,30 +97,32 @@
 </head>
 <body>
 
-  <div class="blur-container">
+  <div id="outer">
+    <div id="middle">
+      <div class="inner">
+
+        <div id="today">
+          <h1 id="city"><span id="cityName"></span><br /><span id="state"></span><a href=""><img src="" alt="" id="changeCity"></a></h1>
+          <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
+          <h2 id="temperature"><a href="#"></a></h2>
+          <!--<p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>-->
+        </div>
+
+        <button class='convert'>Convert to<span class="tempFormat"></span></button>
+
+        <hr>
+
+        <div id="forecast">
+          <ul>
+          </ul>
+        </div>
+
+        <div id="credits">
+          <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
+        </div>
+      </div>
   </div>
-  <div class="container">
-
-    <div id="today">
-      <h1 id="city"><span id="cityName"></span><br /><span id="state"></span><a href=""><img src="" alt="" id="changeCity"></a></h1>
-      <p><i class="icon wi wi-day-sunny" id="icon"></i></p>
-      <h2 id="temperature"><a href="#"></a></h2>
-      <!--<p>Lows: <span id="temperatureLow"></span><a href="#"></a> | Highs: <span id="temperatureHigh"></span><a href="#"></a></p>-->
-    </div>
-
-    <button class='convert'>Convert to<span class="tempFormat"></span></button>
-
-    <hr>
-
-    <div id="forecast">
-      <ul>
-      </ul>
-    </div>
-
-    <div id="credits">
-      <p>Created by <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a> &amp; <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a></p>
-    </div>
-  </div>
+</div>
 
   <script>
 $(document).ready(function() {
@@ -121,8 +134,12 @@ $(document).ready(function() {
   getLocation();
   function getLocation() {
     $.get("http://ipinfo.io", function(location) {
-      $('.location')
-        city = location.city;
+        city = location.loc;
+      
+        if (location.city) {
+          city = location.city;
+        }  
+      
         state = location.region;
         $('#cityName').html(city);
         $('#state').html(state);
@@ -198,7 +215,7 @@ $(document).ready(function() {
         if (dayIndex >= 7) {
           dayIndex = dayIndex - 7;
         }
-        htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">" + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) + "</p></li>";
+        htmlForecastString = "<li><p class=\"day\">" + days[dayIndex] + "</p><br><p><i class=\"wi " + forecastData[i] + "\"></i></p><br><p class=\"date\">"/* + (date.getMonth() + 1) + "/" + (date.getDate() + 1 + i) */ + "</p></li>";
         $('#forecast ul').append(htmlForecastString);
       }
       if ( weatherClasses.hasOwnProperty(weatherIcon) ){
